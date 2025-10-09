@@ -63,14 +63,16 @@ void saturation(BYTE array[], double factor, LONG width, LONG trueWidth, LONG he
 
         for(int y = 0; y < height; ++y) {
             pxlCtr = 0;
-            for(x = 0; x < width - 2; ++x)
+            for(x = 0; x < width; ++x)
             {
                 if(pxlCtr % 3 == 0)
-                    normalizedAvg = (array[x + (y * trueWidth)] + array[x + 1 + (y * trueWidth)] + array[x + 2 + (y * trueWidth)]) / 255.0;
+                    normalizedAvg = ((array[x + (y * trueWidth)] + array[x + 1 + (y * trueWidth)] + array[x + 2 + (y * trueWidth)]) / 3.0) / 255.0;
                 
                 currByte = (array[x + (y * trueWidth)]) / 255.0;
                 normalizedVal = currByte + (currByte - normalizedAvg) * factor;
-                array [x + (y * trueWidth)] = normalizedVal * 255;
+                if(normalizedVal > 1)
+                    normalizedVal = 1; 
+                array[x + (y * trueWidth)] = normalizedVal * 255;
                 ++pxlCtr;
             }
     }
@@ -129,7 +131,7 @@ int main(int argc, char *argv[])
 
     FILE *inputFP = fopen(argv[1], "rb");
     FILE *outputFP = fopen(argv[2], "wb");
-    char operation[strlen(argv[3]) + 1];
+    char operation[1000];
     strcpy(operation, argv[3]);
     double factor = atof(argv[4]);
     
@@ -171,4 +173,4 @@ int main(int argc, char *argv[])
 
 // Compile and run with these :
 // gcc lab2.c -o imgchange
-// ./imgchange ./blend-images/flowers.bmp ./result-images/flowers-lightness.bmp lightness 1
+// ./imgchange ./blend-images/jar.bmp ./result-images/jar-sat.bmp saturation .6666
