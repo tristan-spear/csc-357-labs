@@ -73,7 +73,7 @@ void rotate(BYTE* input, BYTE* output, LONG width, LONG trueWidth, LONG height, 
         if(fork() == 0)
         {
             int *coords = (int*)malloc(2 * sizeof(int));
-            for(int y = i * (height / 4); y < (y + 1) * (height / 4); ++y)
+            for(int y = i * (height / N); y < (y + 1) * (height / N); ++y)
             {
                 for(int x = 0; x < width; ++x)
                 {
